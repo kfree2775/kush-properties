@@ -1,0 +1,35 @@
+{
+  "name": "kushproperties",
+  "version": "1.0.0",
+  "description": "KushProperties — Luxury Real Estate Website",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"vite\" \"nodemon server/index.js\"",
+    "dev:server": "nodemon server/index.js",
+    "dev:client": "vite",
+    "build": "vite build",
+    "start": "node server/index.js",
+    "seed": "node server/seed.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cloudinary": "^2.5.1",
+    "connect-mongo": "^5.1.0",
+    "cors": "^2.8.5",
+    "csrf-csrf": "^3.0.6",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.1",
+    "express-rate-limit": "^7.4.1",
+    "express-session": "^1.18.1",
+    "mongodb": "^7.2.0",
+    "mongoose": "^8.9.5",
+    "multer": "^1.4.5-lts.1",
+    "sanitize-html": "^2.14.0",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.9",
+    "vite": "^6.0.7"
+  }
+}

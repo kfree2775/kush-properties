@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Page Not Found</title>
+  <link rel="stylesheet" href="/css/design-system.css">
+  <style>
+    .not-found {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 2rem;
+    }
+    .not-found__code {
+      font-family: var(--font-headline);
+      font-size: clamp(6rem, 15vw, 12rem);
+      font-weight: 800;
+      background: var(--gradient-gold);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .not-found__title {
+      font-size: var(--text-h2);
+      margin-bottom: 0.75rem;
+    }
+    .not-found__text {
+      color: var(--color-on-surface-variant);
+      max-width: 400px;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="not-found">
+    <div class="not-found__code">404</div>
+    <h1 class="not-found__title">Page Not Found</h1>
+    <p class="not-found__text">The page you're looking for doesn't exist or has been moved.</p>
+    <a href="/" class="btn btn-primary btn-lg">Back to Home</a>
+  </div>
+</body>
+</html>

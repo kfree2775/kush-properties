@@ -1,0 +1,14 @@
+import mongoose from 'mongoose';
+
+const slideSchema = new mongoose.Schema({
+  imageUrl: { type: String, required: true },
+  publicId: { type: String, default: '' },
+  headline: { type: String, default: '' },
+  ctaText: { type: String, default: '' },
+  ctaLink: { type: String, default: '' },
+  sortOrder: { type: Number, default: 0, index: true },
+}, { timestamps: true });
+
+slideSchema.index({ sortOrder: 1 });
+
+export default mongoose.model('Slide', slideSchema);
