@@ -9,6 +9,6 @@ const slideSchema = new mongoose.Schema({
   sortOrder: { type: Number, default: 0, index: true },
 }, { timestamps: true });
 
-slideSchema.index({ sortOrder: 1 });
+
 
 export default mongoose.model('Slide', slideSchema);

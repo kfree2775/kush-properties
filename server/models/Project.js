@@ -48,7 +48,6 @@ const projectSchema = new mongoose.Schema({
   draftOverrides: { type: mongoose.Schema.Types.Mixed, default: null },
 }, { timestamps: true });
 
-projectSchema.index({ slug: 1 }, { unique: true });
 projectSchema.index({ category: 1, isPublished: 1, sortOrder: 1 });
 projectSchema.index({ isPublished: 1, featuredRank: 1 });
 

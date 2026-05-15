@@ -6,6 +6,6 @@ const categorySchema = new mongoose.Schema({
   sortOrder: { type: Number, default: 0 },
 });
 
-categorySchema.index({ slug: 1 }, { unique: true });
+
 
 export default mongoose.model('Category', categorySchema);

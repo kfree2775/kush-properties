@@ -8,6 +8,6 @@ const adminUserSchema = new mongoose.Schema({
   lastLogin: { type: Date, default: null },
 }, { timestamps: true });
 
-adminUserSchema.index({ email: 1 }, { unique: true });
+
 
 export default mongoose.model('AdminUser', adminUserSchema);
