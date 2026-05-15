@@ -22,6 +22,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const isProd = process.env.NODE_ENV === 'production';
 
+// Trust proxy is required for Render to correctly handle secure cookies and rate-limiting IPs
+app.set('trust proxy', 1);
+
 // ---------- Middleware ----------
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
