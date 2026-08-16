@@ -2,8 +2,8 @@ const { apiFetch, setTitle, showToast } = window.__admin;
 
 export async function render(el) {
   setTitle('Site Config');
-  const hash = window.location.hash.replace('#', ''); // site-config, seo, or ui-text
-  const currentTab = ['site-config', 'seo', 'ui-text'].includes(hash) ? hash : 'site-config';
+  const hash = window.location.hash.replace('#', ''); // site-config, seo, ui-text, or social
+  const currentTab = ['site-config', 'seo', 'ui-text', 'social'].includes(hash) ? hash : 'site-config';
   
   let config = {};
   try { config = await apiFetch('/site-config'); } catch {}
@@ -54,6 +54,8 @@ export async function render(el) {
     tabContent = `
     <p class="form-help" style="margin-bottom:1.5rem;">Customize the text labels shown across your website. Leave blank to use defaults.</p>
     ${[
+      ['aboutHeroOverline', 'About Page — Hero Overline'],
+      ['aboutTeamOverline', 'About Page — Team Overline'],
       ['aboutCtaTitle', 'About Page — CTA Title'],
       ['aboutCtaSubtext', 'About Page — CTA Subtitle'],
       ['aboutCtaPrimaryText', 'About Page — Primary Button Text'],
@@ -72,6 +74,15 @@ export async function render(el) {
     ].map(([key, label]) => `
       <div class="form-group"><label>${label}</label><input type="text" id="ui-${key}" value="${ui[key] || ''}"></div>
     `).join('')}`;
+  } else if (currentTab === 'social') {
+    const social = config.social || [];
+    tabContent = `
+    <p class="form-help" style="margin-bottom:1.5rem;">Manage your social media links displayed in the footer.</p>
+    <div id="social-links-container">
+      ${social.map((s, i) => socialRow(s, i)).join('')}
+    </div>
+    <button type="button" class="btn btn-ghost btn-sm" id="sc-add-social" style="margin-bottom:1rem;">+ Add Social Link</button>
+    `;
   }
 
   el.innerHTML = `<div class="admin-card"><div class="admin-card__header" style="margin-bottom: 0;">
@@ -81,6 +92,7 @@ export async function render(el) {
     <button type="button" class="admin-tab ${currentTab==='site-config'?'active':''}" onclick="window.location.hash='site-config'">General Settings</button>
     <button type="button" class="admin-tab ${currentTab==='seo'?'active':''}" onclick="window.location.hash='seo'">SEO & Sharing</button>
     <button type="button" class="admin-tab ${currentTab==='ui-text'?'active':''}" onclick="window.location.hash='ui-text'">UI Text & Labels</button>
+    <button type="button" class="admin-tab ${currentTab==='social'?'active':''}" onclick="window.location.hash='social'">Social Media</button>
   </div>
   <form id="sc-form" class="admin-form">
     ${tabContent}
@@ -109,9 +121,17 @@ export async function render(el) {
         });
       } else if (currentTab === 'ui-text') {
         payload.uiStrings = payload.uiStrings || {};
-        ['aboutCtaTitle', 'aboutCtaSubtext', 'aboutCtaPrimaryText', 'aboutCtaPrimaryLink', 'aboutCtaSecondaryText', 'aboutCtaSecondaryLink', 'contactHeroTitle', 'contactHeroSubtext', 'contactFormTitle', 'projectsSectionTitle', 'projectsSectionSubtitle', 'projectsEmptyText', 'projectsViewAllText', 'propertyEnquirePrefix', 'legalFallbackText'].forEach(key => {
+        ['aboutHeroOverline', 'aboutTeamOverline', 'aboutCtaTitle', 'aboutCtaSubtext', 'aboutCtaPrimaryText', 'aboutCtaPrimaryLink', 'aboutCtaSecondaryText', 'aboutCtaSecondaryLink', 'contactHeroTitle', 'contactHeroSubtext', 'contactFormTitle', 'projectsSectionTitle', 'projectsSectionSubtitle', 'projectsEmptyText', 'projectsViewAllText', 'propertyEnquirePrefix', 'legalFallbackText'].forEach(key => {
           payload.uiStrings[key] = el.querySelector(`#ui-${key}`).value;
         });
+      } else if (currentTab === 'social') {
+        const rows = el.querySelectorAll('.social-link-row');
+        payload.social = Array.from(rows).map(r => ({
+          platform: r.querySelector('.sl-platform')?.value || '',
+          url: r.querySelector('.sl-url')?.value || '',
+          icon: r.querySelector('.sl-icon')?.value || '',
+          sortOrder: parseInt(r.querySelector('.sl-order')?.value) || 0,
+        })).filter(s => s.platform && s.url);
       }
       
       await apiFetch('/site-config', { method: 'PUT', body: JSON.stringify(payload) });
@@ -119,4 +139,26 @@ export async function render(el) {
       config = await apiFetch('/site-config');
     } catch (e) { showToast(e.message, 'error'); }
   });
+
+  if (currentTab === 'social') {
+    let nextIdx = config.social?.length || 0;
+    el.querySelector('#sc-add-social')?.addEventListener('click', () => {
+      el.querySelector('#social-links-container').insertAdjacentHTML('beforeend', socialRow({}, nextIdx++));
+    });
+    el.addEventListener('click', e => {
+      if (e.target.classList.contains('btn-del-social')) {
+        e.target.closest('.social-link-row').remove();
+      }
+    });
+  }
+}
+
+function socialRow(s, i) {
+  return `<div class="social-link-row form-row" style="margin-bottom:0.5rem;align-items:end;position:relative;padding-right:4rem;">
+    <div class="form-group" style="margin-bottom:0;"><label>Platform (e.g. Facebook)</label><input type="text" class="sl-platform" value="${s.platform || ''}"></div>
+    <div class="form-group" style="margin-bottom:0;"><label>URL</label><input type="text" class="sl-url" value="${s.url || ''}"></div>
+    <div class="form-group" style="margin-bottom:0;width:120px;"><label>Icon Key</label><input type="text" class="sl-icon" value="${s.icon || ''}" placeholder="facebook, etc"></div>
+    <div class="form-group" style="margin-bottom:0;width:80px;"><label>Order</label><input type="number" class="sl-order" value="${s.sortOrder ?? i}"></div>
+    <button type="button" class="btn btn-ghost btn-sm btn-del-social" style="position:absolute;right:0;bottom:0;color:var(--color-error);">Del</button>
+  </div>`;
 }

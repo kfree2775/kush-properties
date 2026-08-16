@@ -143,6 +143,12 @@ function renderFooter(footerConfig, siteConfig) {
             <span>${companyName}</span>
           </a>
           ${aboutText ? `<p class="footer__brand-text">${aboutText}</p>` : ''}
+          ${siteConfig?.contact?.addressFull ? `
+            <div class="footer__address" style="margin: 1rem 0; font-size: 0.9rem; color: var(--text-muted);">
+              <strong>Corporate Office:</strong><br>
+              ${siteConfig.contact.addressFull.replace(/\n/g, '<br>')}
+            </div>
+          ` : ''}
           ${social.length > 0 ? `
             <div class="footer__social">
               ${social.sort((a, b) => a.sortOrder - b.sortOrder).map(s => `
@@ -196,7 +202,7 @@ async function initAboutPage(data, uiStrings = window.uiStrings || {}) {
     <section class="about-team section">
       <div class="container">
         <div class="section-header" data-animate="fade-up">
-          <p class="text-overline">Our People</p>
+          <p class="text-overline">${uiStrings.aboutTeamOverline || 'Our People'}</p>
           <h2>Meet The Team</h2>
         </div>
         <div class="about-team__grid" data-animate-stagger>
@@ -221,7 +227,7 @@ async function initAboutPage(data, uiStrings = window.uiStrings || {}) {
         <div></div>
       </div>
       <div class="about-hero__content" data-animate="fade-up">
-        <p class="text-overline">About Us</p>
+        <p class="text-overline">${uiStrings.aboutHeroOverline || 'About Us'}</p>
         <h1 class="about-hero__tagline">${about.heroTagline || 'Building Trust, One Home at a Time'}</h1>
         <p class="about-hero__sub">${about.heroSubtext || 'Premium real estate development across Maharashtra since 2005.'}</p>
       </div>

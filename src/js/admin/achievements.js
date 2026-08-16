@@ -12,6 +12,7 @@ export async function render(el) {
         <div class="form-group"><label>Icon</label><input type="text" class="ach-icon" value="${a.icon || ''}" data-id="${a._id}"></div>
         <div class="form-group"><label>Label</label><input type="text" class="ach-label" value="${a.label || ''}" data-id="${a._id}"></div>
       </div>
+      <p class="text-muted" style="font-size:var(--text-caption);margin-bottom:0.5rem;">Value is the number to animate to. Suffix is text (like '+', 'K', ' Lakh') appended after the number.</p>
       <div class="form-row">
         <div class="form-group"><label>Value</label><input type="number" class="ach-value" value="${a.value || 0}" data-id="${a._id}"></div>
         <div class="form-group"><label>Suffix</label><input type="text" class="ach-suffix" value="${a.suffix || ''}" data-id="${a._id}"></div>

@@ -18,7 +18,7 @@ export function initAchievements(achievementsData) {
       ${achievementsData.map((ach) => `
         <div class="achievement-card">
           <span class="achievement-card__icon">${ach.icon || '🏆'}</span>
-          <div class="achievement-card__number" data-target="${ach.number}">0</div>
+          <div class="achievement-card__number" data-target="${ach.value}${ach.suffix || ''}">0</div>
           <div class="achievement-card__label">${ach.label}</div>
         </div>
       `).join('')}

@@ -26,6 +26,8 @@ const siteConfigSchema = new mongoose.Schema({
     sortOrder: { type: Number, default: 0 },
   }],
   uiStrings: {
+    aboutHeroOverline: { type: String, default: 'About Us' },
+    aboutTeamOverline: { type: String, default: 'Our People' },
     aboutCtaTitle: { type: String, default: 'Ready to Find Your Dream Home?' },
     aboutCtaSubtext: { type: String, default: 'Let our experts guide you through our premium portfolio.' },
     aboutCtaPrimaryText: { type: String, default: 'Explore Projects' },
