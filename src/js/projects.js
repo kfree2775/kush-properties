@@ -14,14 +14,15 @@ export function initFeaturedProjects(projectsData, categoriesData) {
 
   allProjects = projectsData || [];
   categories = categoriesData || [];
+  const uiStrings = window.uiStrings || {};
 
   if (allProjects.length === 0) {
     section.innerHTML = `
       <div class="container">
         <div class="section-header" data-animate="fade-up">
-          <p class="text-overline">Our Portfolio</p>
-          <h2>Our Ongoing Projects</h2>
-          <p>Coming Soon — exciting projects are in the pipeline.</p>
+          <p class="text-overline">${uiStrings.projectsSectionTitle || 'Our Portfolio'}</p>
+          <h2>${uiStrings.projectsSectionSubtitle || 'Our Ongoing Projects'}</h2>
+          <p>${uiStrings.projectsEmptyText || 'Coming Soon — exciting projects are in the pipeline.'}</p>
         </div>
       </div>
     `;
@@ -45,13 +46,13 @@ export function initFeaturedProjects(projectsData, categoriesData) {
   section.innerHTML = `
     <div class="container">
       <div class="section-header" data-animate="fade-up">
-        <p class="text-overline">Our Portfolio</p>
-        <h2>Our Ongoing Projects</h2>
+        <p class="text-overline">${uiStrings.projectsSectionTitle || 'Our Portfolio'}</p>
+        <h2>${uiStrings.projectsSectionSubtitle || 'Our Ongoing Projects'}</h2>
       </div>
       ${tabsHTML}
       <div class="projects__grid" id="projects-grid" data-animate-stagger></div>
       <div class="projects__view-all" data-animate="fade-up">
-        <a href="/projects" class="btn btn-secondary btn-lg">View All Projects →</a>
+        <a href="/projects" class="btn btn-secondary btn-lg">${uiStrings.projectsViewAllText || 'View All Projects →'}</a>
       </div>
     </div>
   `;

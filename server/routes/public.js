@@ -79,6 +79,7 @@ router.get('/bootstrap', async (req, res) => {
 
     res.json({
       siteConfig: siteConfig || {},
+      uiStrings: siteConfig?.uiStrings || {},
       navbar: navbar || {},
       footer: footer || {},
       slides: slides || [],

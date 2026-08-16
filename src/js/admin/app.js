@@ -50,29 +50,33 @@ function showToast(msg, type = 'info') {
 }
 
 const NAV = [
-  { section: 'Overview', items: [{ id: 'dashboard', icon: '📊', label: 'Dashboard' }] },
-  { section: 'Content', items: [
-    { id: 'projects', icon: '🏗️', label: 'Projects' },
+  { section: 'Dashboard', items: [{ id: 'dashboard', icon: '📊', label: 'Dashboard' }] },
+  { section: 'CONTENT', items: [
     { id: 'slides', icon: '🖼️', label: 'Hero Slides' },
-    { id: 'achievements', icon: '🏆', label: 'Achievements' },
+    { id: 'projects', icon: '🏗️', label: 'Projects' },
     { id: 'categories', icon: '📁', label: 'Categories' },
-    { id: 'about', icon: '📄', label: 'About Page' },
-    { id: 'legal', icon: '⚖️', label: 'Legal Pages' },
+    { id: 'achievements', icon: '🏆', label: 'Achievements' },
+    { id: 'about', icon: 'ℹ️', label: 'About Page' },
+    { id: 'legal', icon: '📄', label: 'Legal Pages' },
   ]},
-  { section: 'Settings', items: [
+  { section: 'SETTINGS', items: [
     { id: 'site-config', icon: '⚙️', label: 'Site Config' },
-    { id: 'navbar', icon: '🧭', label: 'Navbar' },
-    { id: 'footer', icon: '🦶', label: 'Footer' },
-    { id: 'popup', icon: '💬', label: 'Popup' },
-    { id: 'cookie', icon: '🍪', label: 'Cookie' },
+    { id: 'seo', icon: '🔍', label: 'SEO & Sharing' },
+    { id: 'ui-text', icon: '✏️', label: 'UI Text & Labels' },
+    { id: 'navbar', icon: '🧭', label: 'Navigation' },
+    { id: 'footer', icon: '🔻', label: 'Footer' },
   ]},
-  { section: 'Data', items: [
-    { id: 'leads', icon: '📋', label: 'Leads' },
-    { id: 'contacts', icon: '✉️', label: 'Messages' },
+  { section: 'ENGAGEMENT', items: [
+    { id: 'popup', icon: '🔔', label: 'Popup' },
+    { id: 'cookie', icon: '🍪', label: 'Cookie Consent' },
   ]},
-  { section: 'System', items: [
-    { id: 'users', icon: '👤', label: 'Admin Users' },
-    { id: 'audit', icon: '📜', label: 'Audit Log' },
+  { section: 'ENQUIRIES', items: [
+    { id: 'leads', icon: '📩', label: 'Leads' },
+    { id: 'contacts', icon: '💬', label: 'Messages' },
+  ]},
+  { section: 'SYSTEM', items: [
+    { id: 'users', icon: '👥', label: 'Admin Users' },
+    { id: 'audit', icon: '📋', label: 'Audit Log' },
   ]},
 ];
 
@@ -112,6 +116,8 @@ const MODULES = {
   'about': () => import('./about.js'),
   'legal': () => import('./legal.js'),
   'site-config': () => import('./site-config.js'),
+  'seo': () => import('./site-config.js'),
+  'ui-text': () => import('./site-config.js'),
   'navbar': () => import('./navbar.js'),
   'footer': () => import('./footer.js'),
   'popup': () => import('./popup.js'),

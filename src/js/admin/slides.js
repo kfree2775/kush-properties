@@ -40,11 +40,15 @@ function renderForm(el, slide) {
     <h3 class="admin-card__title">${isEdit ? 'Edit' : 'New'} Slide</h3>
     <button class="btn btn-ghost btn-sm" id="back">← Back</button>
   </div><form id="slide-form" class="admin-form">
-    <div class="form-group"><label>Headline</label><input type="text" id="sf-headline" value="${slide?.headline || ''}"></div>
-    <div class="form-group"><label>Subtext</label><textarea id="sf-subtext" rows="3">${slide?.subtext || ''}</textarea></div>
+    <div class="form-group"><label>Headline</label><input type="text" id="sf-headline" value="${slide?.headline || ''}"><div class="form-help">Main hero text displayed over the slide image.</div></div>
+    <div class="form-group"><label>Subtext</label><textarea id="sf-subtext" rows="3">${slide?.subtext || ''}</textarea><div class="form-help">Subtitle text shown below the headline. Leave empty to hide.</div></div>
     <div class="form-row">
       <div class="form-group"><label>CTA Text</label><input type="text" id="sf-cta" value="${slide?.ctaText || ''}"></div>
       <div class="form-group"><label>CTA Link</label><input type="text" id="sf-link" value="${slide?.ctaLink || ''}"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Secondary CTA Text</label><input type="text" id="sf-cta2" value="${slide?.cta2Text || ''}"><div class="form-help">Text for the secondary button (e.g., Schedule Visit). Leave empty to hide.</div></div>
+      <div class="form-group"><label>Secondary CTA Link</label><input type="text" id="sf-link2" value="${slide?.cta2Link || ''}"><div class="form-help">URL the secondary button links to (e.g., /contact)</div></div>
     </div>
     <div class="form-group"><label>Sort Order</label><input type="number" id="sf-order" value="${slide?.sortOrder ?? 0}"></div>
     <div class="form-group"><label>Image</label>
@@ -53,6 +57,7 @@ function renderForm(el, slide) {
         <p class="text-muted" style="font-size:var(--text-body-sm);">Click to upload</p>
         <input type="file" id="sf-file" accept="image/*">
       </div>
+      <div class="form-help">Recommended size: 1920×800px. JPG or PNG.</div>
     </div>
     <div class="admin-form-actions">
       <button type="submit" class="btn btn-primary">${isEdit ? 'Save' : 'Create'}</button>
@@ -69,7 +74,7 @@ function renderForm(el, slide) {
   el.querySelector('#slide-form')?.addEventListener('submit', async (e) => {
     e.preventDefault(); const btn = e.target.querySelector('button[type="submit"]'); btn.disabled = true;
     try {
-      const data = { headline: el.querySelector('#sf-headline').value, subtext: el.querySelector('#sf-subtext').value, ctaText: el.querySelector('#sf-cta').value, ctaLink: el.querySelector('#sf-link').value, sortOrder: parseInt(el.querySelector('#sf-order').value) || 0 };
+      const data = { headline: el.querySelector('#sf-headline').value, subtext: el.querySelector('#sf-subtext').value, ctaText: el.querySelector('#sf-cta').value, ctaLink: el.querySelector('#sf-link').value, cta2Text: el.querySelector('#sf-cta2').value, cta2Link: el.querySelector('#sf-link2').value, sortOrder: parseInt(el.querySelector('#sf-order').value) || 0 };
       const fd = new FormData(); fd.append('data', JSON.stringify(data));
       if (fileInput?.files[0]) fd.append('image', fileInput.files[0]);
       await apiUpload(isEdit ? `/slides/${slide._id}` : '/slides', fd, isEdit ? 'PUT' : 'POST');

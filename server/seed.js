@@ -86,10 +86,10 @@ const seeds = {
           disclaimerText: 'MahaRERA registration number for KushProperties projects. Verify all details on https://maharera.mahaonline.gov.in before making any decisions.',
         },
         pageSeo: {
-          home: { title: 'KushProperties — Luxury Real Estate in Pune', metaDescription: 'Premium residential & commercial properties across Maharashtra. Curating exclusive lifestyles for the discerning few.' },
-          about: { title: 'About KushProperties — Our Story', metaDescription: 'Transforming Maharashtra\'s landscape since 2008 through architectural excellence and unwavering integrity.' },
+          home: { title: 'KushProperties — Luxury Real Estate in Pune', metaDescription: 'Premium residential & commercial properties. Crafting homes, building dreams.' },
+          about: { title: 'About KushProperties — Our Story', metaDescription: 'Transforming the real estate landscape with excellence and trust.' },
           contact: { title: 'Contact KushProperties — Get In Touch', metaDescription: 'Reach out for property inquiries, site visits, or any questions. Our team is here to help.' },
-          projects: { title: 'Our Projects — KushProperties', metaDescription: 'Explore our portfolio of premium residential and commercial projects across Pune and Maharashtra.' },
+          projects: { title: 'Our Projects — KushProperties', metaDescription: 'Explore our portfolio of premium residential and commercial projects.' },
         },
         copyright: '© 2024 KushProperties. All Rights Reserved.',
       });
@@ -287,15 +287,21 @@ const seeds = {
         {
           imageUrl: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600',
           headline: 'Crafting Homes, Building Dreams',
+          subtext: 'Premium residential & commercial properties across Maharashtra.',
           ctaText: 'Explore Projects',
           ctaLink: '/projects',
+          secondaryCtaText: 'Schedule Visit',
+          secondaryCtaLink: '/contact',
           sortOrder: 0,
         },
         {
           imageUrl: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1600',
           headline: 'Luxury Living Redefined',
+          subtext: 'Curating exclusive lifestyles for the discerning few.',
           ctaText: 'Schedule Visit',
           ctaLink: '/contact',
+          secondaryCtaText: 'Explore Projects',
+          secondaryCtaLink: '/projects',
           sortOrder: 1,
         },
         {

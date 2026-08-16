@@ -121,16 +121,20 @@ function serve(fileName, seoFetcher) {
 
 function buildSeoTags({ title, description, ogImage, ogUrl }) {
   const tags = [];
+  tags.push('<meta name="twitter:card" content="summary_large_image">');
   if (title) {
     tags.push(`<title>${escapeHtml(title)}</title>`);
     tags.push(`<meta property="og:title" content="${escapeHtml(title)}">`);
+    tags.push(`<meta name="twitter:title" content="${escapeHtml(title)}">`);
   }
   if (description) {
     tags.push(`<meta name="description" content="${escapeHtml(description)}">`);
     tags.push(`<meta property="og:description" content="${escapeHtml(description)}">`);
+    tags.push(`<meta name="twitter:description" content="${escapeHtml(description)}">`);
   }
   if (ogImage) {
     tags.push(`<meta property="og:image" content="${escapeHtml(ogImage)}">`);
+    tags.push(`<meta name="twitter:image" content="${escapeHtml(ogImage)}">`);
   }
   if (ogUrl) {
     tags.push(`<meta property="og:url" content="${escapeHtml(ogUrl)}">`);

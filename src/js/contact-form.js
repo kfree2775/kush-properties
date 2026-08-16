@@ -11,12 +11,13 @@ export function initContactPage(siteConfig) {
 
   const contact = siteConfig?.contact || {};
   const mapUrl = contact.mapEmbedUrl || '';
+  const uiStrings = window.uiStrings || {};
 
   main.innerHTML = `
     <section class="contact-hero" data-animate="fade-up">
       <div class="container">
-        <h1 class="contact-hero__title">Get In Touch</h1>
-        <p class="contact-hero__subtitle">We'd love to hear from you. Reach out for property inquiries, site visits, or any questions.</p>
+        <h1 class="contact-hero__title">${uiStrings.contactHeroTitle || 'Get In Touch'}</h1>
+        <p class="contact-hero__subtitle">${uiStrings.contactHeroSubtext || "We'd love to hear from you. Reach out for property inquiries, site visits, or any questions."}</p>
       </div>
     </section>
 
@@ -24,7 +25,7 @@ export function initContactPage(siteConfig) {
       <div class="container">
         <div class="contact-grid">
           <div class="contact-form-card" data-animate="fade-up">
-            <h2 class="contact-form-card__title">Send Us a Message</h2>
+            <h2 class="contact-form-card__title">${uiStrings.contactFormTitle || 'Send Us a Message'}</h2>
             <form id="contact-form">
               <div class="form-row">
                 <div class="form-group">

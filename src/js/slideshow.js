@@ -13,23 +13,7 @@ export function initSlideshow(slidesData) {
   const hero = document.getElementById('hero');
 
   if (!hero || slides.length === 0) {
-    // Fallback: single placeholder slide
     if (hero) {
-      hero.innerHTML = `
-        <div class="hero__slides">
-          <div class="hero__slide active">
-            <div class="hero__slide-overlay"></div>
-            <div class="hero__content container">
-              <h1 class="hero__headline">Welcome to KushProperties</h1>
-              <p class="hero__subtext">Premium residential & commercial properties across Maharashtra.</p>
-              <div class="hero__actions">
-                <a href="/projects" class="btn btn-primary btn-lg">Explore Projects</a>
-                <a href="/contact" class="btn btn-secondary btn-lg">Contact Us</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
       hero.style.background = `linear-gradient(135deg, var(--color-surface-lowest), var(--color-bg))`;
     }
     return;
@@ -64,11 +48,11 @@ export function initSlideshow(slidesData) {
   hero.innerHTML = `
     <div class="hero__slides">${slidesHTML}</div>
     <div class="hero__content container" id="hero-content">
-      <h1 class="hero__headline">${firstSlide.headline || 'Welcome to KushProperties'}</h1>
-      <p class="hero__subtext">Premium residential & commercial properties across Maharashtra. Curating exclusive lifestyles for the discerning few.</p>
+      <h1 class="hero__headline">${firstSlide.headline || ''}</h1>
+      <p class="hero__subtext">${firstSlide.subtext || ''}</p>
       <div class="hero__actions">
         ${firstSlide.ctaText ? `<a href="${firstSlide.ctaLink || '/projects'}" class="btn btn-primary btn-lg">${firstSlide.ctaText}</a>` : ''}
-        <a href="/contact" class="btn btn-secondary btn-lg">Schedule Visit</a>
+        ${firstSlide.secondaryCtaText ? `<a href="${firstSlide.secondaryCtaLink || '/contact'}" class="btn btn-secondary btn-lg">${firstSlide.secondaryCtaText}</a>` : ''}
       </div>
     </div>
     ${arrowsHTML}
@@ -118,14 +102,15 @@ function goToSlide(index) {
   const content = document.getElementById('hero-content');
   if (content && slide) {
     const headline = content.querySelector('.hero__headline');
+    const subtext = content.querySelector('.hero__subtext');
     const actions = content.querySelector('.hero__actions');
-    if (headline) headline.textContent = slide.headline || 'Welcome to KushProperties';
+    if (headline) headline.textContent = slide.headline || '';
+    if (subtext) subtext.textContent = slide.subtext || '';
     if (actions) {
-      const primaryBtn = actions.querySelector('.btn-primary');
-      if (primaryBtn && slide.ctaText) {
-        primaryBtn.textContent = slide.ctaText;
-        primaryBtn.href = slide.ctaLink || '/projects';
-      }
+      actions.innerHTML = `
+        ${slide.ctaText ? `<a href="${slide.ctaLink || '/projects'}" class="btn btn-primary btn-lg">${slide.ctaText}</a>` : ''}
+        ${slide.secondaryCtaText ? `<a href="${slide.secondaryCtaLink || '/contact'}" class="btn btn-secondary btn-lg">${slide.secondaryCtaText}</a>` : ''}
+      `;
     }
   }
 

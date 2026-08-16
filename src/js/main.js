@@ -185,7 +185,7 @@ function renderFooter(footerConfig, siteConfig) {
 
 // ==================== Page-Specific Init ====================
 
-async function initAboutPage(data) {
+async function initAboutPage(data, uiStrings = window.uiStrings || {}) {
   const main = document.getElementById('about-content');
   if (!main) return;
 
@@ -271,11 +271,11 @@ async function initAboutPage(data) {
     <section class="about-cta section">
       <div class="container">
         <div class="about-cta__inner" data-animate="fade-up">
-          <h2 class="about-cta__title">Ready to Find Your Dream Home?</h2>
-          <p class="about-cta__text">Let our experts guide you through our premium portfolio.</p>
+          <h2 class="about-cta__title">${uiStrings.aboutCtaTitle || 'Ready to Find Your Dream Home?'}</h2>
+          <p class="about-cta__text">${uiStrings.aboutCtaSubtext || 'Let our experts guide you through our premium portfolio.'}</p>
           <div class="flex justify-center gap-md">
-            <a href="/projects" class="btn btn-primary btn-lg">Explore Projects</a>
-            <a href="/contact" class="btn btn-secondary btn-lg">Get In Touch</a>
+            <a href="${uiStrings.aboutCtaPrimaryLink || '/projects'}" class="btn btn-primary btn-lg">${uiStrings.aboutCtaPrimaryText || 'Explore Projects'}</a>
+            <a href="${uiStrings.aboutCtaSecondaryLink || '/contact'}" class="btn btn-secondary btn-lg">${uiStrings.aboutCtaSecondaryText || 'Get In Touch'}</a>
           </div>
         </div>
       </div>
@@ -284,7 +284,7 @@ async function initAboutPage(data) {
   refreshScrollAnimations();
 }
 
-async function initLegalPage() {
+async function initLegalPage(uiStrings = window.uiStrings || {}) {
   const main = document.getElementById('legal-content');
   if (!main) return;
 
@@ -296,7 +296,7 @@ async function initLegalPage() {
       <section class="section" style="padding-top: calc(var(--navbar-height) + var(--space-3xl));">
         <div class="container content-narrow">
           <h1 class="text-h1" style="margin-bottom: var(--space-xl);">${data.title || slug}</h1>
-          <div class="text-variant" style="line-height: var(--leading-relaxed);">${data.content || '<p>This page is being updated.</p>'}</div>
+          <div class="text-variant" style="line-height: var(--leading-relaxed);">${data.content || `<p>${uiStrings.legalFallbackText || 'This page is being updated.'}</p>`}</div>
         </div>
       </section>
     `;
@@ -304,7 +304,7 @@ async function initLegalPage() {
     main.innerHTML = `
       <section class="section" style="padding-top: calc(var(--navbar-height) + var(--space-3xl));">
         <div class="container content-narrow">
-          <h1 class="text-h1">This page is being updated</h1>
+          <h1 class="text-h1">${uiStrings.legalFallbackText || 'This page is being updated'}</h1>
           <p class="text-variant">Please check back later.</p>
         </div>
       </section>
@@ -325,6 +325,9 @@ async function init() {
         ? await fetchPreviewHomepage()
         : await fetchBootstrap();
 
+      const uiStrings = data.config?.uiStrings || {};
+      window.uiStrings = uiStrings;
+
       renderNavbar(data.navbar, data.siteConfig);
       renderFooter(data.footer, data.siteConfig);
       initSlideshow(data.slides);
@@ -343,6 +346,9 @@ async function init() {
       } catch {
         data = {}; // Use fallback navbar/footer
       }
+
+      const uiStrings = data.config?.uiStrings || {};
+      window.uiStrings = uiStrings;
 
       renderNavbar(data.navbar, data.siteConfig);
       renderFooter(data.footer, data.siteConfig);

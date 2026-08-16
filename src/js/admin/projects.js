@@ -67,8 +67,15 @@ function renderForm(el, project) {
         ${['active','upcoming','completed','sold_out'].map(s => `<option value="${s}" ${project?.status===s?'selected':''}>${s}</option>`).join('')}
       </select></div>
     </div>
-    <div class="form-group"><label>Price Range</label><input type="text" id="pf-price" value="${project?.priceRange || ''}" placeholder="e.g. ₹45L – ₹1.2Cr"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Price Range</label><input type="text" id="pf-price" value="${project?.priceRange || ''}" placeholder="e.g. ₹45L – ₹1.2Cr"></div>
+      <div class="form-group"><label>Price (Numeric, in Lakhs)</label><input type="number" step="any" id="pf-price-num" value="${project?.priceNumeric || ''}"><div class="form-help">Used for sorting. Enter price in lakhs (e.g., 85 for ₹85L, 350 for ₹3.5Cr)</div></div>
+    </div>
     <div class="form-group"><label>Location</label><input type="text" id="pf-location" value="${project?.location || ''}" placeholder="e.g. Baner, Pune"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Latitude</label><input type="number" step="any" id="pf-lat" value="${project?.coordinates?.lat || ''}"></div>
+      <div class="form-group"><label>Longitude</label><input type="number" step="any" id="pf-lng" value="${project?.coordinates?.lng || ''}"></div>
+    </div>
     <div class="form-group"><label>RERA Number</label><input type="text" id="pf-rera" value="${project?.reraNumber || ''}"></div>
     <div class="form-group"><label>Description (HTML)</label><textarea id="pf-desc" rows="6">${project?.description || ''}</textarea></div>
     <div class="form-group"><label>Amenities (comma-separated)</label><input type="text" id="pf-amenities" value="${(project?.amenities||[]).join(', ')}"></div>
@@ -88,6 +95,34 @@ function renderForm(el, project) {
         <input type="file" id="pf-cover-file" accept="image/*">
       </div>
     </div>
+    ${isEdit ? `
+    <div class="form-group"><label>Gallery Images</label>
+      <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1rem;" id="pf-gallery-list">
+        ${(project?.gallery || []).map(g => `
+          <div style="position:relative;width:120px;border:1px solid var(--color-outline);border-radius:var(--radius-md);overflow:hidden;">
+            <img src="${g.url}" style="width:100%;height:80px;object-fit:cover;">
+            <div style="padding:0.5rem;font-size:0.75rem;text-align:center;">
+               ${g.caption || 'No caption'}
+            </div>
+            <button type="button" class="btn btn-ghost btn-sm btn-del-gallery" data-id="${g._id}" style="position:absolute;top:0.25rem;right:0.25rem;background:rgba(0,0,0,0.5);color:white;padding:0.25rem;border-radius:50%;">&times;</button>
+          </div>
+        `).join('')}
+      </div>
+      <div style="display:flex;gap:0.5rem;">
+        <input type="file" id="pf-gallery-file" accept="image/*" style="display:none;">
+        <button type="button" class="btn btn-ghost btn-sm" id="pf-gallery-add">+ Add Image</button>
+      </div>
+    </div>
+    ` : '<p class="form-help" style="margin-bottom:1.5rem;">Save the project first to upload gallery images.</p>'}
+    
+    <details style="border:1px solid var(--color-outline);border-radius:var(--radius-md);padding:1rem;">
+      <summary style="font-weight:600;cursor:pointer;color:var(--color-primary);">SEO Settings</summary>
+      <div style="margin-top:1rem;">
+        <div class="form-group"><label>Meta Title</label><input type="text" id="pf-seo-title" value="${project?.seo?.metaTitle || ''}"></div>
+        <div class="form-group"><label>Meta Description</label><textarea id="pf-seo-desc" rows="2">${project?.seo?.metaDescription || ''}</textarea></div>
+        <div class="form-group"><label>OG Image URL</label><input type="text" id="pf-seo-img" value="${project?.seo?.ogImage || ''}"></div>
+      </div>
+    </details>
     <div class="admin-form-actions">
       <button type="submit" class="btn btn-primary">${isEdit ? 'Save Changes' : 'Create Project'}</button>
       <button type="button" class="btn btn-ghost" id="back-list2">Cancel</button>
@@ -110,6 +145,32 @@ function renderForm(el, project) {
     }
   });
 
+  const galAddBtn = el.querySelector('#pf-gallery-add');
+  const galFileInput = el.querySelector('#pf-gallery-file');
+  galAddBtn?.addEventListener('click', () => galFileInput?.click());
+  galFileInput?.addEventListener('change', async () => {
+    if (galFileInput.files[0] && isEdit) {
+      const fd = new FormData(); fd.append('image', galFileInput.files[0]);
+      const caption = prompt('Image Caption (optional):') || '';
+      fd.append('data', JSON.stringify({ caption }));
+      try {
+        await apiUpload(`/projects/${project._id}/images`, fd, 'POST');
+        showToast('Image uploaded', 'success');
+        projects = await apiFetch('/projects');
+        renderForm(el, projects.find(p => p._id === project._id));
+      } catch (e) { showToast(e.message, 'error'); }
+    }
+  });
+  el.querySelectorAll('.btn-del-gallery').forEach(b => b.addEventListener('click', async () => {
+    if(!confirm('Delete this gallery image?')) return;
+    try {
+      await apiFetch(`/projects/${project._id}/images/${b.dataset.id}`, { method: 'DELETE' });
+      showToast('Image deleted', 'success');
+      projects = await apiFetch('/projects');
+      renderForm(el, projects.find(p => p._id === project._id));
+    } catch (e) { showToast(e.message, 'error'); }
+  }));
+
   el.querySelector('#back-list')?.addEventListener('click', () => renderList(el));
   el.querySelector('#back-list2')?.addEventListener('click', () => renderList(el));
 
@@ -124,7 +185,12 @@ function renderForm(el, project) {
         category: el.querySelector('#pf-category').value || undefined,
         status: el.querySelector('#pf-status').value,
         priceRange: el.querySelector('#pf-price').value,
+        priceNumeric: el.querySelector('#pf-price-num')?.value ? Number(el.querySelector('#pf-price-num').value) : undefined,
         location: el.querySelector('#pf-location').value,
+        coordinates: {
+          lat: el.querySelector('#pf-lat')?.value ? Number(el.querySelector('#pf-lat').value) : undefined,
+          lng: el.querySelector('#pf-lng')?.value ? Number(el.querySelector('#pf-lng').value) : undefined,
+        },
         reraNumber: el.querySelector('#pf-rera').value,
         description: el.querySelector('#pf-desc').value,
         amenities: el.querySelector('#pf-amenities').value.split(',').map(a => a.trim()).filter(Boolean),
@@ -135,6 +201,11 @@ function renderForm(el, project) {
           possessionDate: el.querySelector('#pf-possession').value,
         },
         featuredRank: el.querySelector('#pf-rank').value ? parseInt(el.querySelector('#pf-rank').value) : undefined,
+        seo: {
+          metaTitle: el.querySelector('#pf-seo-title')?.value,
+          metaDescription: el.querySelector('#pf-seo-desc')?.value,
+          ogImage: el.querySelector('#pf-seo-img')?.value,
+        },
       };
       const fd = new FormData();
       fd.append('data', JSON.stringify(data));

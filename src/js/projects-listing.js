@@ -21,11 +21,13 @@ export function initProjectsListing(categoriesData) {
   const main = document.getElementById('projects-content');
   if (!main) return;
 
+  const uiStrings = window.uiStrings || {};
+
   // Build page structure
   main.innerHTML = `
     <section class="page-hero" data-animate="fade-up">
       <div class="container">
-        <h1 class="page-hero__title">Our Projects</h1>
+        <h1 class="page-hero__title">${uiStrings.projectsSectionTitle || 'Our Projects'}</h1>
         <p class="page-hero__subtitle">Explore our portfolio of premium residential and commercial projects across Pune and Maharashtra.</p>
       </div>
     </section>
