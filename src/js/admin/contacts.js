@@ -13,13 +13,13 @@ async function loadPage(el, page) {
     <a href="/api/admin/contacts/export" target="_blank" class="btn btn-secondary btn-sm">📥 Export CSV</a>
   </div><div class="admin-table-wrap"><table class="admin-table"><thead><tr>
     <th>Name</th><th>Email</th><th>Message</th><th>Read</th><th>Date</th><th>Actions</th>
-  </tr></thead><tbody>${data.contacts.length ? data.contacts.map(c => `<tr style="${!c.isRead ? 'background:rgba(var(--color-primary-rgb),0.03);' : ''}">
+  </tr></thead><tbody>${data.contacts.length ? data.contacts.map(c => `<tr style="${!c.read ? 'background:rgba(var(--color-primary-rgb),0.03);' : ''}">
     <td><strong>${c.name}</strong></td><td>${c.email}</td>
     <td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${c.message}</td>
-    <td>${c.isRead ? '✅' : '🔵'}</td>
+    <td>${c.read ? '✅' : '🔵'}</td>
     <td>${new Date(c.createdAt).toLocaleDateString('en-IN')}</td>
     <td class="td-actions">
-      ${!c.isRead ? `<button class="btn btn-ghost btn-sm" data-read="${c._id}">Mark Read</button>` : ''}
+      ${!c.read ? `<button class="btn btn-ghost btn-sm" data-read="${c._id}">Mark Read</button>` : ''}
       <button class="btn btn-ghost btn-sm" data-del="${c._id}" style="color:var(--color-error);">Delete</button>
     </td></tr>`).join('') : '<tr><td colspan="6" class="text-muted" style="text-align:center;">No messages yet</td></tr>'}</tbody></table></div>
   ${data.totalPages > 1 ? `<div style="display:flex;justify-content:center;gap:0.5rem;margin-top:1rem;">

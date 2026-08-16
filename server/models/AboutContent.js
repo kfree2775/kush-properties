@@ -6,7 +6,12 @@ const aboutContentSchema = new mongoose.Schema({
     publicId: { type: String, default: '' },
   },
   heroTagline: { type: String, default: '' },
+  heroSubtext: { type: String, default: '' },
   storyTitle: { type: String, default: '' },
+  storyImage: {
+    url: { type: String, default: '' },
+    publicId: { type: String, default: '' },
+  },
   storyContent: { type: String, default: '' },
   mission: { type: String, default: '' },
   vision: { type: String, default: '' },

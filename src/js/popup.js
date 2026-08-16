@@ -8,7 +8,7 @@ const STORAGE_KEY = 'kp_popup_dismissed';
 const DISMISSED_EXPIRY_DAYS = 7;
 
 export function initPopup(popupConfig) {
-  if (!popupConfig || popupConfig.isEnabled === false) return;
+  if (!popupConfig || popupConfig.enabled === false) return;
 
   // Check if already dismissed recently
   const dismissed = localStorage.getItem(STORAGE_KEY);

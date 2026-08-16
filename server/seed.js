@@ -79,8 +79,8 @@ const seeds = {
           { platform: 'LinkedIn', url: '#', icon: 'linkedin', sortOrder: 2 },
           { platform: 'YouTube', url: '#', icon: 'youtube', sortOrder: 3 },
         ],
-        whatsapp: { number: '919XXXXXXXXX', enabled: true },
-        analytics: { gaMeasurementId: '', enabled: false },
+        whatsapp: { phone: '919XXXXXXXXX', message: 'Hi, I am interested in KushProperties', enabled: true },
+        analytics: { ga4Id: '', enabled: false },
         rera: {
           companyRegNumber: 'RERA/REG/XXXX',
           disclaimerText: 'MahaRERA registration number for KushProperties projects. Verify all details on https://maharera.mahaonline.gov.in before making any decisions.',
@@ -183,10 +183,10 @@ const seeds = {
     const achCount = await Achievement.countDocuments();
     if (achCount === 0) {
       await Achievement.insertMany([
-        { number: '5,000+', label: 'Families Served', icon: '🏠', sortOrder: 0 },
-        { number: '20 Lakh+', label: 'Sq.Ft. Developed', icon: '📐', sortOrder: 1 },
-        { number: '50+', label: 'Projects Completed', icon: '🏗️', sortOrder: 2 },
-        { number: '18+', label: 'Years of Trust', icon: '⭐', sortOrder: 3 },
+        { value: 5000, suffix: '+', label: 'Families Served', icon: '🏠', sortOrder: 0 },
+        { value: 20, suffix: ' Lakh+', label: 'Sq.Ft. Developed', icon: '📐', sortOrder: 1 },
+        { value: 50, suffix: '+', label: 'Projects Completed', icon: '🏗️', sortOrder: 2 },
+        { value: 18, suffix: '+', label: 'Years of Trust', icon: '⭐', sortOrder: 3 },
       ]);
       logger.info('Achievements seeded (4)');
     }

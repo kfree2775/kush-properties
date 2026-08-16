@@ -89,7 +89,7 @@ router.get('/audit-logs', async (req, res) => {
     const p = Math.max(1, parseInt(page));
     const s = Math.min(100, Math.max(1, parseInt(pageSize) || 50));
     const [logs, total] = await Promise.all([
-      AuditLog.find().sort({ createdAt: -1 }).skip((p - 1) * s).limit(s).lean(),
+      AuditLog.find().sort({ timestamp: -1 }).skip((p - 1) * s).limit(s).lean(),
       AuditLog.countDocuments(),
     ]);
     res.json({ logs, total, page: p, pageSize: s, totalPages: Math.ceil(total / s) });

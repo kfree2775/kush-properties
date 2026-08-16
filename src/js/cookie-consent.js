@@ -20,7 +20,7 @@ export function initCookieConsent(cookieConfig, analyticsConfig) {
   }
 
   // No decision yet — show banner
-  if (cookieConfig?.isEnabled === false) {
+  if (cookieConfig?.enabled === false) {
     // Cookies disabled by admin — load analytics without banner
     loadAnalytics(analyticsConfig);
     return;
@@ -33,7 +33,7 @@ function showBanner(config, analyticsConfig) {
   const banner = document.getElementById('cookie-banner');
   if (!banner) return;
 
-  const message = config?.message || 'We use cookies to improve your experience. By continuing to browse, you agree to our use of cookies.';
+  const message = config?.bannerText || 'We use cookies to improve your experience. By continuing to browse, you agree to our use of cookies.';
   const acceptText = config?.acceptText || 'Accept All';
   const declineText = config?.declineText || 'Decline';
 

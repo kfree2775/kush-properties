@@ -6,7 +6,7 @@ export async function render(el) {
   try { config = await apiFetch('/popup'); } catch {}
   el.innerHTML = `<div class="admin-card"><form id="pp-form" class="admin-form">
     <div class="form-group"><label>Enabled</label>
-      <div class="admin-toggle"><div class="admin-toggle__switch ${config.isEnabled!==false?'on':''}" id="pp-enabled"></div><span class="admin-toggle__label">${config.isEnabled!==false?'Yes':'No'}</span></div>
+      <div class="admin-toggle"><div class="admin-toggle__switch ${config.enabled!==false?'on':''}" id="pp-enabled"></div><span class="admin-toggle__label">${config.enabled!==false?'Yes':'No'}</span></div>
     </div>
     <div class="form-group"><label>Heading</label><input type="text" id="pp-heading" value="${config.heading || ''}"></div>
     <div class="form-group"><label>Subtext</label><textarea id="pp-subtext" rows="3">${config.subtext || ''}</textarea></div>
@@ -20,7 +20,7 @@ export async function render(el) {
     e.preventDefault();
     try {
       await apiFetch('/popup', { method: 'PUT', body: JSON.stringify({
-        isEnabled: el.querySelector('#pp-enabled').classList.contains('on'),
+        enabled: el.querySelector('#pp-enabled').classList.contains('on'),
         heading: el.querySelector('#pp-heading').value, subtext: el.querySelector('#pp-subtext').value,
         ctaText: el.querySelector('#pp-cta').value, delaySeconds: parseInt(el.querySelector('#pp-delay').value) || 15,
       })});

@@ -13,7 +13,7 @@ async function loadPage(el, page) {
   </div><div class="admin-table-wrap"><table class="admin-table"><thead><tr>
     <th>Date</th><th>Admin</th><th>Action</th><th>Model</th><th>Target ID</th>
   </tr></thead><tbody>${data.logs.length ? data.logs.map(l => `<tr>
-    <td>${new Date(l.createdAt).toLocaleString('en-IN')}</td>
+    <td>${new Date(l.timestamp).toLocaleString('en-IN')}</td>
     <td>${l.adminUser || '—'}</td>
     <td><span class="badge">${l.action}</span></td>
     <td>${l.model || '—'}</td>

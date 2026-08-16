@@ -27,7 +27,7 @@ router.post('/slides', upload.single('image'), async (req, res) => {
     if (req.file) {
       const result = await uploadToCloudinary(req.file.buffer, { folder: 'kushproperties/slides' });
       data.imageUrl = result.url;
-      data.imagePublicId = result.publicId;
+      data.publicId = result.publicId;
     }
     const slide = await Slide.create(data);
     await auditLog(req.session.adminUser.id, 'create', 'Slide', slide._id);
@@ -41,10 +41,10 @@ router.put('/slides/:id', upload.single('image'), async (req, res) => {
     if (!slide) return res.status(404).json({ error: 'Not found' });
     const data = JSON.parse(req.body.data || '{}');
     if (req.file) {
-      if (slide.imagePublicId) await destroyAsset(slide.imagePublicId);
+      if (slide.publicId) await destroyAsset(slide.publicId);
       const result = await uploadToCloudinary(req.file.buffer, { folder: 'kushproperties/slides' });
       data.imageUrl = result.url;
-      data.imagePublicId = result.publicId;
+      data.publicId = result.publicId;
     }
     Object.assign(slide, data);
     await slide.save();
@@ -57,7 +57,7 @@ router.delete('/slides/:id', async (req, res) => {
   try {
     const slide = await Slide.findByIdAndDelete(req.params.id);
     if (!slide) return res.status(404).json({ error: 'Not found' });
-    if (slide.imagePublicId) await destroyAsset(slide.imagePublicId);
+    if (slide.publicId) await destroyAsset(slide.publicId);
     await auditLog(req.session.adminUser.id, 'delete', 'Slide', slide._id);
     res.json({ message: 'Deleted' });
   } catch (e) { logger.error(e.message); res.status(500).json({ error: 'Failed to delete' }); }
@@ -142,8 +142,10 @@ router.put('/about', upload.fields([
     for (const field of ['heroImage', 'storyImage']) {
       if (req.files?.[field]?.[0]) {
         const result = await uploadToCloudinary(req.files[field][0].buffer, { folder: 'kushproperties/about' });
-        data[field] = result.url;
-        data[`${field}PublicId`] = result.publicId;
+        data[field] = {
+          url: result.url,
+          publicId: result.publicId
+        };
       }
     }
     let doc = await AboutContent.findOne();

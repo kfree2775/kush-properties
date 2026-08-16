@@ -67,7 +67,7 @@ router.get('/contacts', async (req, res) => {
 router.put('/contacts/:id/read', async (req, res) => {
   try {
     const contact = await ContactSubmission.findByIdAndUpdate(
-      req.params.id, { isRead: true }, { new: true }
+      req.params.id, { read: true }, { new: true }
     );
     if (!contact) return res.status(404).json({ error: 'Not found' });
     res.json(contact);
@@ -88,7 +88,7 @@ router.get('/contacts/export', async (req, res) => {
     const contacts = await ContactSubmission.find().sort({ createdAt: -1 }).lean();
     const header = 'Name,Email,Phone,Message,Read,Date\n';
     const rows = contacts.map(c =>
-      `"${esc(c.name)}","${esc(c.email)}","${esc(c.phone)}","${esc(c.message)}","${c.isRead ? 'Yes' : 'No'}","${c.createdAt?.toISOString() || ''}"`
+      `"${esc(c.name)}","${esc(c.email)}","${esc(c.phone)}","${esc(c.message)}","${c.read ? 'Yes' : 'No'}","${c.createdAt?.toISOString() || ''}"`
     ).join('\n');
     res.setHeader('Content-Type', 'text/csv');
     res.setHeader('Content-Disposition', `attachment; filename="contacts_${Date.now()}.csv"`);
