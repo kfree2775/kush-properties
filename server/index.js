@@ -11,6 +11,7 @@ import fs from 'fs';
 import logger from './logger.js';
 import validateEnv from './validate-env.js';
 import connectDB from './db.js';
+import pingRoute from './routes/ping.js';
 
 // Validate environment before anything else
 validateEnv();
@@ -245,6 +246,9 @@ async function startServer() {
   }
 
   // ---------- Routes ----------
+  // UptimeRobot ping route
+  app.use('/ping', pingRoute);
+
   // Import routes (created in Phase 2+)
   try {
     const { default: publicRoutes } = await import('./routes/public.js');
