@@ -63,6 +63,7 @@ const NAV = [
     { id: 'site-config', icon: '⚙️', label: 'Site Config' },
     { id: 'seo', icon: '🔍', label: 'SEO & Sharing' },
     { id: 'ui-text', icon: '✏️', label: 'UI Text & Labels' },
+    { id: 'social', icon: '📱', label: 'Social Media' },
     { id: 'navbar', icon: '🧭', label: 'Navigation' },
     { id: 'footer', icon: '🔻', label: 'Footer' },
   ]},
@@ -118,6 +119,7 @@ const MODULES = {
   'site-config': () => import('./site-config.js'),
   'seo': () => import('./site-config.js'),
   'ui-text': () => import('./site-config.js'),
+  'social': () => import('./site-config.js'),
   'navbar': () => import('./navbar.js'),
   'footer': () => import('./footer.js'),
   'popup': () => import('./popup.js'),
@@ -131,7 +133,9 @@ const MODULES = {
 async function loadModule(id) {
   currentModule = id;
   document.querySelectorAll('.admin-nav-item').forEach(b => b.classList.toggle('active', b.dataset.module === id));
-  window.location.hash = id;
+  if (window.location.hash.replace('#', '') !== id) {
+    window.location.hash = id;
+  }
   const content = document.getElementById('admin-content');
   content.innerHTML = '<div class="loading-overlay"><div class="loading-spinner"></div></div>';
   try {
@@ -161,6 +165,13 @@ async function init() {
   renderSidebar();
   const hash = window.location.hash.replace('#', '') || 'dashboard';
   loadModule(hash);
+
+  window.addEventListener('hashchange', () => {
+    const newHash = window.location.hash.replace('#', '') || 'dashboard';
+    if (newHash !== currentModule) {
+      loadModule(newHash);
+    }
+  });
 }
 
 init();

@@ -1,9 +1,15 @@
 const { apiFetch, setTitle, showToast } = window.__admin;
 
 export async function render(el) {
-  setTitle('Site Config');
   const hash = window.location.hash.replace('#', ''); // site-config, seo, ui-text, or social
   const currentTab = ['site-config', 'seo', 'ui-text', 'social'].includes(hash) ? hash : 'site-config';
+  const titles = {
+    'site-config': 'Site Config',
+    'seo': 'SEO & Sharing',
+    'ui-text': 'UI Text & Labels',
+    'social': 'Social Media'
+  };
+  setTitle(titles[currentTab] || 'Site Config');
   
   let config = {};
   try { config = await apiFetch('/site-config'); } catch {}
