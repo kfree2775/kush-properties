@@ -331,7 +331,7 @@ async function init() {
         ? await fetchPreviewHomepage()
         : await fetchBootstrap();
 
-      const uiStrings = data.config?.uiStrings || {};
+      const uiStrings = data.uiStrings || data.siteConfig?.uiStrings || {};
       window.uiStrings = uiStrings;
 
       renderNavbar(data.navbar, data.siteConfig);
@@ -353,7 +353,7 @@ async function init() {
         data = {}; // Use fallback navbar/footer
       }
 
-      const uiStrings = data.config?.uiStrings || {};
+      const uiStrings = data.uiStrings || data.siteConfig?.uiStrings || {};
       window.uiStrings = uiStrings;
 
       renderNavbar(data.navbar, data.siteConfig);

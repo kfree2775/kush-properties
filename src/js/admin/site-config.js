@@ -52,7 +52,7 @@ export async function render(el) {
     <p class="form-help" style="margin-bottom:1.5rem;">These appear when your site is shared on social media (WhatsApp, Facebook, Twitter).</p>
     ${['home', 'about', 'contact', 'projects'].map(p => `
       <h4 style="margin:1.5rem 0 1rem;color:var(--color-primary);text-transform:capitalize;">${p} Page</h4>
-      <div class="form-group"><label>Meta Title</label><input type="text" id="seo-${p}-title" value="${ps[p]?.metaTitle || ''}"></div>
+      <div class="form-group"><label>Meta Title</label><input type="text" id="seo-${p}-title" value="${ps[p]?.title || ''}"></div>
       <div class="form-group"><label>Meta Description</label><textarea id="seo-${p}-desc" rows="2">${ps[p]?.metaDescription || ''}</textarea></div>
       <div class="form-group"><label>OG Image URL</label><input type="text" id="seo-${p}-img" value="${ps[p]?.ogImage || ''}"></div>
     `).join('')}`;
@@ -120,7 +120,7 @@ export async function render(el) {
         payload.pageSeo = payload.pageSeo || {};
         ['home', 'about', 'contact', 'projects'].forEach(p => {
           payload.pageSeo[p] = {
-            metaTitle: el.querySelector(`#seo-${p}-title`).value,
+            title: el.querySelector(`#seo-${p}-title`).value,
             metaDescription: el.querySelector(`#seo-${p}-desc`).value,
             ogImage: el.querySelector(`#seo-${p}-img`).value
           };

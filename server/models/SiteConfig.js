@@ -45,11 +45,12 @@ const siteConfigSchema = new mongoose.Schema({
     legalFallbackText: { type: String, default: 'This page is being updated.' },
   },
   whatsapp: {
-    number: { type: String, default: '' },
+    phone: { type: String, default: '' },
+    message: { type: String, default: '' },
     enabled: { type: Boolean, default: false },
   },
   analytics: {
-    gaMeasurementId: { type: String, default: '' },
+    ga4Id: { type: String, default: '' },
     enabled: { type: Boolean, default: false },
   },
   rera: {
